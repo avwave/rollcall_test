@@ -1,6 +1,6 @@
 import type { Marker } from '@googlemaps/markerclusterer';
-import React, { useCallback } from 'react';
 import { AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { useCallback } from 'react';
 import { Location } from '../../models/Locations';
 
 export type NodeMarkerProps = {
@@ -21,7 +21,7 @@ export const NodeMarker = (props: NodeMarkerProps) => {
 
   return (
     <AdvancedMarker position={location.location} ref={ref} onClick={handleClick}>
-      <Pin/>
+      <Pin />
     </AdvancedMarker>
   );
 };

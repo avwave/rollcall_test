@@ -34,6 +34,7 @@ const LocationMarkers: React.FC = () => {
       if (marker) {
         return { ...markers, [key]: marker };
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [key]: _, ...newMarkers } = markers;
 
         return newMarkers;

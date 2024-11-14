@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
+import { ArrowLeftIcon, Bars3Icon, TrashIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { locationsState } from '../../models/Locations';
@@ -20,16 +20,15 @@ const SideBar = () => {
           />
         )}
       <div
-        className={`${isOpen ? 'w-screen md:w-64' : 'w-0'} duration-300 pt-10`}
+        className={`${isOpen ? 'w-screen md:w-80' : 'w-0'} duration-300 pt-10`}
       >
         <div className="p-1">
           <ul className={`${isOpen ? 'block' : 'hidden'} list-none`}>
 
             {locations.map((location, index) => (
-              <li key={index} className="py-2">
+              <li key={index} className="py-2 flex flex-row justify-between items-center">
                 <button
-                  onClick={() => setLocations(locations.filter(loc => loc !== location))}
-                  className="flex text-start justify-start text-gray-700 hover:bg-gray-100 focus:outline-none"
+                  className="flex-grow text-start justify-start text-gray-700 hover:bg-gray-100 focus:outline-none"
                 >
                   <span
                     className={
@@ -39,8 +38,12 @@ const SideBar = () => {
                   >
                     {location?.geocode?.formatted_address}
                   </span>
-
-
+                </button>
+                <button
+                  className="flex-shrink-0 p-1 min-h-10 min-w-10 rounded border border-red-500"
+                  onClick={() => setLocations(locations.filter(loc => loc !== location))}
+                >
+                  <TrashIcon className="text-gray-500 hover:bg-red-100" />
                 </button>
               </li>
             ))}
