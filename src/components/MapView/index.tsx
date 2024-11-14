@@ -1,10 +1,10 @@
-import { APIProvider, Map, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
+import { Map, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
 import { useCallback, useEffect, useState } from 'react';
-import { InfoWindowMarker } from './InfoWindowMarker';
-import LocationMarkers from './LocationMarkers';
-import { currentLocationState } from '../../models/Locations';
 import { useRecoilState } from 'recoil';
+import { currentLocationState } from '../../models/Locations';
+import { InfoWindowMarker } from './InfoWindowMarker';
 import { LocationDetailMarker } from './LocationDetailMarker';
+import LocationMarkers from './LocationMarkers';
 
 const MapView = () => {
 
@@ -56,10 +56,5 @@ const MapView = () => {
   )
 }
 
-const MapViewContainer = () => (
-  <APIProvider apiKey={import.meta.env.VITE_MAPBOX_TOKEN}>
-    <MapView />
-  </APIProvider>
-)
 
-export { MapViewContainer as MapView };
+export { MapView };
