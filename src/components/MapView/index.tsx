@@ -1,11 +1,15 @@
 import { APIProvider, Map, MapMouseEvent } from '@vis.gl/react-google-maps';
 import { useCallback, useState } from 'react';
 import { InfoWindowMarker } from './InfoWindowMarker';
+import { locationsState } from '../../models/Locations';
+import { useRecoilState } from 'recoil';
+import LocationMarkers from './LocationMarkers';
 
 const MapView = () => {
 
   const [currentMarker, setCurrentMarker] = useState<google.maps.LatLngLiteral | null>();
 
+  const [locations, setLocations] = useRecoilState(locationsState);
 
   const handleMapClick = useCallback(
     async (ev: MapMouseEvent) => {
@@ -16,6 +20,7 @@ const MapView = () => {
   return (
 
     <Map
+      mapId={'DEMO_MAP_ID'}
       style={{ width: '100%', height: '100%' }}
       defaultCenter={{
         lat: -37.4502222,
@@ -25,7 +30,7 @@ const MapView = () => {
       gestureHandling={"greedy"}
       disableDefaultUI={false}
       onClick={handleMapClick}
-    >
+    > <LocationMarkers locations={locations} />
       <InfoWindowMarker latLng={currentMarker} />
     </Map>
   )
