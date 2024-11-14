@@ -17,7 +17,11 @@ export const currentLocationState = atom<Location|null>({
   default: null as Location | null
 })
 
-export const currentGeolocationState = atom<google.maps.LatLngLiteral|null>({
+export interface GeoLatLng extends google.maps.LatLngLiteral {
+  accuracy?: number;
+}
+
+export const currentGeolocationState = atom<GeoLatLng|null>({
   key:'currentGeolocationAtom',
   default:null
 })

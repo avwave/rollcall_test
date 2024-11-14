@@ -15,7 +15,8 @@ const Geolocator = () => {
           (position) => {
             setCurrentGeolocation({
               lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lng: position.coords.longitude,
+              accuracy: position.coords.accuracy
             });
 
           },

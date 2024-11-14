@@ -5,6 +5,7 @@ import { currentLocationState } from '../../models/Locations';
 import { InfoWindowMarker } from './InfoWindowMarker';
 import { LocationDetailMarker } from './LocationDetailMarker';
 import LocationMarkers from './LocationMarkers';
+import { SelfMarker } from './SelfMarker';
 
 const MapView = () => {
 
@@ -31,6 +32,7 @@ const MapView = () => {
     }, [setCurrentLocation]
   );
 
+  
   return (
 
     <Map
@@ -51,6 +53,7 @@ const MapView = () => {
       {currentLocation &&
         <LocationDetailMarker location={currentLocation} />
       }
+      <SelfMarker />
       <LocationMarkers />
     </Map>
   )

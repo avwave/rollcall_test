@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import { Location } from "../models/Locations"
+import { GeoLatLng, Location } from "../models/Locations"
 
 const getRouteAddressFromLocation = (location: Location): string => {
   const routeAddress = location.geocode?.filter(loc => {
@@ -31,7 +31,7 @@ const getFullAddressFromLocation = (location: Location): string => {
 }
 
 
-const getDistanceFromSelf = async (selfLocation:google.maps.LatLngLiteral|null, destination: Location, library:google.maps.DistanceMatrixService|undefined): Promise<string> => {
+const getDistanceFromSelf = async (selfLocation:GeoLatLng|null, destination: Location, library:google.maps.DistanceMatrixService|undefined): Promise<string> => {
   if (!library || !selfLocation || !destination) return 'n/a'
 
   try {
