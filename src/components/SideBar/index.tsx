@@ -1,9 +1,11 @@
 import { ArrowLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { locationsState } from '../../models/Locations';
 
 const SideBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(true);
+  const [locations, setLocations] = useRecoilState(locationsState);
 
   return (
     <div className='flex hin-h-screen bg-gray-100 relative'>
@@ -17,17 +19,31 @@ const SideBar = () => {
             onClick={() => setIsOpen(true)}
           />
         )}
-
       <div
-        onClick={() => setIsOpen(!isOpen)}
-        className={`${isOpen ? 'w-screen md:w-64' : 'w-0'} duration-300`}
+        className={`${isOpen ? 'w-screen md:w-64' : 'w-0'} duration-300 pt-10`}
       >
-        <div className="p-5">
+        <div className="p-1">
           <ul className={`${isOpen ? 'block' : 'hidden'} list-none`}>
-            <li className='mt-2'>Item</li>
-            <li className='mt-2'>Item</li>
-            <li className='mt-2'>Item</li>
-            <li className='mt-2'>Item</li>
+
+            {locations.map((location, index) => (
+              <li key={index} className="py-2">
+                <button
+                  onClick={() => setLocations(locations.filter(loc => loc !== location))}
+                  className="flex text-start justify-start text-gray-700 hover:bg-gray-100 focus:outline-none"
+                >
+                  <span
+                    className={
+                      `text-sm font-semibold 
+                      }`
+                    }
+                  >
+                    {location?.geocode?.formatted_address}
+                  </span>
+
+
+                </button>
+              </li>
+            ))}
           </ul>
 
         </div>
