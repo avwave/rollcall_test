@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { InfoWindow, Marker, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, InfoWindow, Marker, useAdvancedMarkerRef, useMapsLibrary } from '@vis.gl/react-google-maps';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 } from "uuid";
@@ -20,7 +20,7 @@ const InfoWindowMarker: React.FC<Props> = ({ latLng, geocodeData }) => {
 
   const [locations, setLocations] = useRecoilState(locationsState);
 
-  const markerRef = useRef<google.maps.Marker>(null)
+  const [markerRef, marker] = useAdvancedMarkerRef();
 
   useEffect(
     () => {
@@ -65,7 +65,7 @@ const InfoWindowMarker: React.FC<Props> = ({ latLng, geocodeData }) => {
     ) => {
       const newLocation: Location = {
         location: location,
-        geocode: geocode?.results?.[0],
+        geocode: geocode?.results,
         id: v4(),
         order: 0
       }
@@ -77,7 +77,7 @@ const InfoWindowMarker: React.FC<Props> = ({ latLng, geocodeData }) => {
 
   return (
     <>
-      <Marker
+      <AdvancedMarker
         ref={markerRef}
         position={latLng}
         onClick={handleMarkerClick}
@@ -86,7 +86,7 @@ const InfoWindowMarker: React.FC<Props> = ({ latLng, geocodeData }) => {
       <InfoWindow
         // position={latLng}
         headerDisabled
-        anchor={markerRef.current}
+        anchor={marker}
       >
         <div className="flex flex-col gap-3">
           <div className="flex flex-row gap-1 items-center justify-end">

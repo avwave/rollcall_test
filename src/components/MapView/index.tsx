@@ -1,17 +1,34 @@
-import { APIProvider, Map, MapMouseEvent } from '@vis.gl/react-google-maps';
-import { useCallback, useState } from 'react';
+import { APIProvider, Map, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
+import { useCallback, useEffect, useState } from 'react';
 import { InfoWindowMarker } from './InfoWindowMarker';
 import LocationMarkers from './LocationMarkers';
+import { currentLocationState } from '../../models/Locations';
+import { useRecoilState } from 'recoil';
+import { LocationDetailMarker } from './LocationDetailMarker';
 
 const MapView = () => {
 
-  const [currentMarker, setCurrentMarker] = useState<google.maps.LatLngLiteral | null>();
+  const [screenMarker, setScreenMarker] = useState<google.maps.LatLngLiteral | null>();
+  const [currentLocation, setCurrentLocation] = useRecoilState(currentLocationState);
 
+  const map = useMap();
 
+  useEffect(
+    () => {
+      if (!map) return
+      if (currentLocation) {
+        setScreenMarker(null)
+      }
+      if (currentLocation?.location) {
+        map.panTo(currentLocation?.location)
+      }
+    }, [currentLocation, map]
+  );
   const handleMapClick = useCallback(
     async (ev: MapMouseEvent) => {
-      setCurrentMarker(ev.detail.latLng)
-    }, []
+      setScreenMarker(ev.detail.latLng)
+      setCurrentLocation(null)
+    }, [setCurrentLocation]
   );
 
   return (
@@ -27,8 +44,14 @@ const MapView = () => {
       gestureHandling={"greedy"}
       disableDefaultUI={false}
       onClick={handleMapClick}
-    > <LocationMarkers />
-      <InfoWindowMarker latLng={currentMarker} />
+    >
+      {screenMarker &&
+        <InfoWindowMarker latLng={screenMarker} />
+      }
+      {currentLocation &&
+        <LocationDetailMarker location={currentLocation} />
+      }
+      <LocationMarkers />
     </Map>
   )
 }

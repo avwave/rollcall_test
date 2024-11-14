@@ -3,14 +3,16 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 import { useMap } from '@vis.gl/react-google-maps';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { Location, locationsState } from '../../models/Locations';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { currentLocationState, Location, locationsState } from '../../models/Locations';
 import { NodeMarker } from './NodeMarker';
 
 const LocationMarkers: React.FC = () => {
 
   const map = useMap();
   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
+
+  const setCurrentLocation = useSetRecoilState(currentLocationState)
 
   const clusterer = useMemo(() => {
     if (!map) return null;
@@ -51,7 +53,7 @@ const LocationMarkers: React.FC = () => {
           <NodeMarker
             location={location}
             onClick={(loc) => {
-              console.log(loc);
+              setCurrentLocation(loc)
             }}
             setMarkerRef={setMarkerRef}
           />

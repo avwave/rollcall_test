@@ -1,13 +1,29 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export interface Location {
   id: string;
   location?: google.maps.LatLngLiteral | null | undefined;
-  geocode?: google.maps.GeocoderResult;
+  geocode?: google.maps.GeocoderResult[];
   order: number
 }
 
-export const locationsState = atom({
+const locationsAtom = atom<Location[]>({
   key: 'locationStateAtom',
   default: [] as Location[]
+})
+
+export const currentLocationState = atom<Location|null>({
+  key: 'currentLocationStateAtom',
+  default: null as Location | null
+})
+
+export const locationsState = selector({
+  key: "locationsStateSelector",
+  get: ({ get }) => {
+    return get(locationsAtom)
+  },
+  set: ({set }, newValue) => {
+    set(locationsAtom, newValue);
+    set(currentLocationState, null)
+  }
 })
