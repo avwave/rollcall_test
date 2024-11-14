@@ -1,4 +1,3 @@
-import React from "react";
 
 const EmptyLocations = () => {
   return (
@@ -11,4 +10,4 @@ const EmptyLocations = () => {
   )
 }
 
-export { EmptyLocations }
+export { EmptyLocations };
