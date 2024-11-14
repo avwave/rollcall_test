@@ -1,10 +1,11 @@
-import { ArrowLeftIcon, Bars3Icon, TrashIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { ArrowLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
+import { useMediaQuery } from '@uidotdev/usehooks';
+import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { useEffect, useState } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { currentLocationState, Location, locationsState } from '../../models/Locations';
-import { getFullAddressFromLocation, getRouteAddressFromLocation } from '../../util/address';
-import { Virtuoso } from 'react-virtuoso';
-import { useMediaQuery } from '@uidotdev/usehooks';
+import { LocationItem } from '../LocationItem';
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -13,6 +14,19 @@ const SideBar = () => {
   const setCurrentLocation = useSetRecoilState(currentLocationState)
 
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
+  const map = useMap();
+  const routeLibrary = useMapsLibrary('routes')
+  const [routeService, setRouteService] = useState<google.maps.DistanceMatrixService | undefined>(undefined);
+
+  useEffect(
+    () => {
+      if (!routeLibrary || !map) return
+      const svc = new routeLibrary.DistanceMatrixService()
+      setRouteService(svc)
+    }, [routeLibrary, map]
+  );
+
 
   return (
     <div className='flex flex-row min-h-screen bg-gray-100 relative'>
@@ -31,8 +45,6 @@ const SideBar = () => {
       <div
         className={`${isOpen ? 'w-screen md:w-80' : 'w-0'} duration-300 pt-10`}
       >
-
-        
         <div className={`${isOpen ? 'block' : 'hidden'} p-1 h-full `}>
           <Virtuoso
             className=''
@@ -42,46 +54,23 @@ const SideBar = () => {
               scrollbarGutter: 'stable both-edges'
             }}
             data={locations}
-            itemContent={(index, location: Location) => (
-              <li key={location.id} className="w-full py-2 flex flex-row justify-between items-center gap-3 border-b-2">
-                <button
-                  className="flex flex-col flex-grow text-start justify-start text-gray-700 hover:bg-gray-100 focus:outline-none"
-                  onClick={() => {
-                    setCurrentLocation(location)
-                    if (isSmallDevice){
-                      setIsOpen(false)
-                    }
-                  }}
-                >
-                  <span
-                    className={
-                      `text-sm font-semibold 
-                      }`
-                    }
-                  >
-                    {getRouteAddressFromLocation(location)}
-                  </span>
-                  <span
-                    className={
-                      `text-sm
-                      }`
-                    }
-                  >
-                    {getFullAddressFromLocation(location)}
-                  </span>
-                </button>
-                <button
-                  className="flex-shrink-0 p-1 min-h-10 min-w-10 rounded border border-red-500"
-                  onClick={() => {
-                    setLocations(locations.filter(loc => loc.id !== location.id))
-                    if (isSmallDevice) {
-                      setIsOpen(false)
-                    }
-                  }}
-                >
-                  <TrashIcon className="text-gray-500 hover:bg-red-100" />
-                </button>
-              </li>
+            itemContent={(_index, location: Location) => (
+              <LocationItem
+                routeService={routeService}
+                location={location}
+                onLocationClick={(selLocation) => {
+                  setCurrentLocation(selLocation)
+                  if (isSmallDevice) {
+                    setIsOpen(false)
+                  }
+                }}
+                onLocationDelete={(selLocation) => {
+                  setLocations(locations.filter(loc => loc.id !== selLocation.id))
+                  if (isSmallDevice) {
+                    setIsOpen(false)
+                  }
+                }}
+              />
             )}
           />
         </div>

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import { Location } from "../models/Locations"
 
 const getRouteAddressFromLocation = (location: Location): string => {
@@ -29,5 +30,24 @@ const getFullAddressFromLocation = (location: Location): string => {
   return address
 }
 
-export { getRouteAddressFromLocation, getFullAddressFromLocation }
+
+const getDistanceFromSelf = async (selfLocation:google.maps.LatLngLiteral|null, destination: Location, library:google.maps.DistanceMatrixService|undefined): Promise<string> => {
+  if (!library || !selfLocation || !destination) return 'n/a'
+
+  try {
+    const result = await library.getDistanceMatrix({
+      origins: [selfLocation],
+      destinations: [destination?.location as google.maps.LatLngLiteral],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    })
+    return result?.rows[0]?.elements[0]?.distance?.text ?? 'n/a'
+  } catch (error) {
+    toast.error(`Error getting distance: ${error}`)
+    return 'n/a'
+  } 
+
+}
+
+export { getRouteAddressFromLocation, getFullAddressFromLocation , getDistanceFromSelf}
 

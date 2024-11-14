@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { AdvancedMarker, InfoWindow, Marker, useAdvancedMarkerRef, useMapsLibrary } from '@vis.gl/react-google-maps';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { AdvancedMarker, InfoWindow, useAdvancedMarkerRef, useMapsLibrary } from '@vis.gl/react-google-maps';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 } from "uuid";
 import { Location, locationsState } from '../../../models/Locations';
