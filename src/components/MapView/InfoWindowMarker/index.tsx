@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 } from "uuid";
 import { Location, locationsState } from '../../../models/Locations';
+import { toast } from 'react-toastify';
 
 
 interface Props {
@@ -42,7 +43,7 @@ const InfoWindowMarker: React.FC<Props> = ({ latLng, geocodeData }) => {
         const geocodeResult = await geocodingService?.geocode({ location: latLng })
         setGeocode(geocodeResult)
       } catch (error) {
-        console.error(error)
+        toast.error((error as Error)?.message, { autoClose: 5000 })
       }
       return null
     }, [geocodingService]

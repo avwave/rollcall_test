@@ -6,6 +6,7 @@ import { Virtuoso } from 'react-virtuoso';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { currentLocationState, Location, locationsState } from '../../models/Locations';
 import { LocationItem } from '../LocationItem';
+import { EmptyLocations } from './EmptyLocations';
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -29,7 +30,7 @@ const SideBar = () => {
 
 
   return (
-    <div className='flex flex-row min-h-screen bg-gray-100 relative'>
+    <div className='flex flex-row min-h-screen relative shadow-lg'>
       <div className="fixed top-0 z-50">
         {isOpen ?
           (
@@ -37,7 +38,7 @@ const SideBar = () => {
               onClick={() => setIsOpen(false)}
             />
           ) : (
-            <Bars3Icon className='size-10 p-1 bg-white rounded border border-gray-200'
+            <Bars3Icon className='size-10 p-1 bg-white rounded border border-gray-200 '
               onClick={() => setIsOpen(true)}
             />
           )}
@@ -53,6 +54,10 @@ const SideBar = () => {
               height: '100%',
               scrollbarGutter: 'stable both-edges'
             }}
+            components={{
+              EmptyPlaceholder: EmptyLocations
+            }}
+
             data={locations}
             itemContent={(_index, location: Location) => (
               <LocationItem
