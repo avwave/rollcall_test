@@ -53,4 +53,6 @@ The other timesink was getting around the new(-ish) restriction to browser geolo
 
 Places API/POI search/address autocomplete
 
-Persist in localStorage 
+~~Persist in localStorage~~  
+
+More info in infowindow.  Reverse geolocation only has addresscomponents.  Enabling Places API would provide more information.  Geolocation API returns a PlaceID so it wouldnt be a stretch to add place info
