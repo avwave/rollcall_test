@@ -51,6 +51,7 @@ const LocationMarkers: React.FC = () => {
       {
         locations.map((location: Location) => (
           <NodeMarker
+            key={location.id}
             location={location}
             onClick={(loc) => {
               setCurrentLocation(loc)
