@@ -40,9 +40,9 @@ const MapView = () => {
         lat: -37.4502222,
         lng: 144.5742387
       }}
-      defaultZoom={13}
+      defaultZoom={15}
       gestureHandling={"greedy"}
-      disableDefaultUI={false}
+      disableDefaultUI
       onClick={handleMapClick}
     >
       {screenMarker &&
