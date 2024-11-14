@@ -1,15 +1,12 @@
 import { APIProvider, Map, MapMouseEvent } from '@vis.gl/react-google-maps';
 import { useCallback, useState } from 'react';
 import { InfoWindowMarker } from './InfoWindowMarker';
-import { locationsState } from '../../models/Locations';
-import { useRecoilState } from 'recoil';
 import LocationMarkers from './LocationMarkers';
 
 const MapView = () => {
 
   const [currentMarker, setCurrentMarker] = useState<google.maps.LatLngLiteral | null>();
 
-  const [locations, setLocations] = useRecoilState(locationsState);
 
   const handleMapClick = useCallback(
     async (ev: MapMouseEvent) => {
@@ -30,7 +27,7 @@ const MapView = () => {
       gestureHandling={"greedy"}
       disableDefaultUI={false}
       onClick={handleMapClick}
-    > <LocationMarkers locations={locations} />
+    > <LocationMarkers />
       <InfoWindowMarker latLng={currentMarker} />
     </Map>
   )

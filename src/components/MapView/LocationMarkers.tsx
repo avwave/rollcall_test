@@ -1,26 +1,59 @@
-import React from 'react';
-import { Location } from '../../models/Locations';
-import { AdvancedMarker, Marker, Pin } from '@vis.gl/react-google-maps';
-interface Props {
-  locations: Location[]
-}
+import type { Marker } from "@googlemaps/markerclusterer";
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
-const LocationMarkers: React.FC<Props> = ({ locations }) => {
+import { useMap } from '@vis.gl/react-google-maps';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { Location, locationsState } from '../../models/Locations';
+import { NodeMarker } from './NodeMarker';
+
+const LocationMarkers: React.FC = () => {
+
+  const map = useMap();
+  const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
+
+  const clusterer = useMemo(() => {
+    if (!map) return null;
+
+    return new MarkerClusterer({ map });
+  }, [map]);
+
+  useEffect(() => {
+    if (!clusterer) return;
+
+    clusterer.clearMarkers();
+    clusterer.addMarkers(Object.values(markers));
+  }, [clusterer, markers]);
+
+  
+  const setMarkerRef = useCallback((marker: Marker | null, key: string) => {
+    setMarkers(markers => {
+      if ((marker && markers[key]) || (!marker && !markers[key]))
+        return markers;
+
+      if (marker) {
+        return { ...markers, [key]: marker };
+      } else {
+        const { [key]: _, ...newMarkers } = markers;
+
+        return newMarkers;
+      }
+    });
+  }, [])
+
+  const locations = useRecoilValue(locationsState);
+
   return (
     <>
       {
         locations.map((location: Location) => (
-          location.location &&
-          <AdvancedMarker
-            key={location.id}
-            position={{
-              lat: location.location?.lat || 0,
-              lng: location.location?.lng || 0
+          <NodeMarker
+            location={location}
+            onClick={(loc) => {
+              console.log(loc);
             }}
-            title={location.geocode?.formatted_address}>
-            <Pin />
-          </AdvancedMarker>
-          
+            setMarkerRef={setMarkerRef}
+          />
         ))
       }
     </>

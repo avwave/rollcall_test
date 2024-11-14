@@ -1,9 +1,9 @@
-import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import { InfoWindow, Marker, useMapsLibrary } from '@vis.gl/react-google-maps';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Location, locationsState } from '../../../models/Locations';
 import { useRecoilState } from 'recoil';
 import { v4 } from "uuid";
+import { Location, locationsState } from '../../../models/Locations';
 
 
 interface Props {
