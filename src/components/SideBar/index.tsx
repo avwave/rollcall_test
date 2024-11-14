@@ -4,7 +4,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { currentLocationState, Location, locationsState } from '../../models/Locations';
 import { getFullAddressFromLocation, getRouteAddressFromLocation } from '../../util/address';
 import { Virtuoso } from 'react-virtuoso';
-import { useMediaQuery } from 'usehooks-ts';
+import { useMediaQuery } from '@uidotdev/usehooks';
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -12,7 +12,7 @@ const SideBar = () => {
 
   const setCurrentLocation = useSetRecoilState(currentLocationState)
 
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   return (
     <div className='flex flex-row min-h-screen bg-gray-100 relative'>
@@ -48,7 +48,7 @@ const SideBar = () => {
                   className="flex flex-col flex-grow text-start justify-start text-gray-700 hover:bg-gray-100 focus:outline-none"
                   onClick={() => {
                     setCurrentLocation(location)
-                    if (!isDesktop){
+                    if (isSmallDevice){
                       setIsOpen(false)
                     }
                   }}
@@ -74,7 +74,7 @@ const SideBar = () => {
                   className="flex-shrink-0 p-1 min-h-10 min-w-10 rounded border border-red-500"
                   onClick={() => {
                     setLocations(locations.filter(loc => loc.id !== location.id))
-                    if (!isDesktop) {
+                    if (isSmallDevice) {
                       setIsOpen(false)
                     }
                   }}
