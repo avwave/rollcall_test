@@ -5,12 +5,13 @@ import { Location } from '../../models/Locations';
 
 export type NodeMarkerProps = {
   location: Location;
+  index: number;
   onClick: (location: Location) => void;
   setMarkerRef: (marker: Marker | null, key: string) => void;
 };
 
 export const NodeMarker = (props: NodeMarkerProps) => {
-  const { location, onClick, setMarkerRef } = props;
+  const { location, onClick, setMarkerRef, index } = props;
 
   const handleClick = useCallback(() => onClick(location), [onClick, location]);
   const ref = useCallback(
@@ -21,7 +22,10 @@ export const NodeMarker = (props: NodeMarkerProps) => {
 
   return (
     <AdvancedMarker position={location.location} ref={ref} onClick={handleClick}>
-      <Pin />
+      <Pin 
+        glyph={`${index +1}`}
+        glyphColor={'white'}
+      />
     </AdvancedMarker>
   );
 };
