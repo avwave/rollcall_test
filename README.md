@@ -1,5 +1,7 @@
 # Installation
 
+should be v 0.0.1?
+
 1. clone repository
 2. copy `.env.example` to `.env`
 1. change `VITE_MAPBOX_TOKEN` to your Google Maps API key
